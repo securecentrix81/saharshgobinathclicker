@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Saharsh Gobinath Clicker</title>
+    <style>
+      .clicker-container {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        overflow: hidden;
+        transition: 0.1s;
+      }
+      .clicker {
+        width: 300px;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .clicker-container:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+        transition: 0.3s;
+      }
+      .clicker-container:active {
+        transform: translate(-50%, -50%) scale(1.5);
+        transition: 0s;
+      }
+      #clicker-count {
+        font-size: 30px;
+        text-align: center;
+      }
+      .game-container {
+        position: fixed;
+        top: 5%;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+        background-color: #ffffff;
+      }
+      body {
+        background-image: url("https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg");
+        background-size: 50px;
+        cursor: none;
+      }
+      #customCursor {
+      	object-fit: cover;
+        width: 50px;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-container">
+      <pre id="clicker-count">0x Saharsh</pre>
+      <div class="clicker-container" id="clicker">
+        <img class="clicker" src="https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg">
+      </div>
+    </div>
+    <img id="customCursor" src="https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg">
+    <script>let ALERTED182735123048123423481 = false;addEventListener("error",(e)=>{if(ALERTED182735123048123423481)return;ALERTED182735123048123423481=true;alert(e.message)})</script>
+    <script>
+      let clicker = document.getElementById("clicker")
+      let clickerCountElement = document.getElementById("clicker-count")
+      let clickerCount = 0
+      clicker.addEventListener("click", (e) => {
+        ++clickerCount
+        clickerCountElement.innerText = `${clickerCount}x Saharsh`
+      })
+      addEventListener("mousemove", (e) => {
+        customCursor.style = `position: absolute;top: ${e.clientY-25}px;left: ${e.clientX-25}px`
+      }, {passive: true})
+    </script>
+  </body>
+</html>
