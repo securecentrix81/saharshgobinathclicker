@@ -39,6 +39,7 @@
         width: 90%;
         height: 90%;
         background-color: #ffffff;
+        text-align: center;
       }
       body {
         background-image: url("https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg");
@@ -55,6 +56,7 @@
   </head>
   <body>
     <div class="game-container">
+      <h1>Saharsh Clicker</h1>
       <pre id="clicker-count">0x Saharsh</pre>
       <div class="clicker-container" id="clicker">
         <img class="clicker" src="https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg">
@@ -77,7 +79,7 @@
       }
       clicker.addEventListener("click", (e) => {
         ++gameState.clickerCount
-        clickerCountElement.innerText = `${clickerCount}x Saharsh`
+        clickerCountElement.innerText = `${gameState.clickerCount}x Saharsh`
       })
       addEventListener("mousemove", (e) => {
         customCursor.style.transform = `translate(${e.clientX-25}px, ${e.clientY-25}px)`
