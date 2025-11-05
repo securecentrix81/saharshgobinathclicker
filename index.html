@@ -49,6 +49,7 @@
       	object-fit: cover;
         width: 50px;
         height: 50px;
+        pointer-events: none;
       }
     </style>
   </head>
@@ -64,14 +65,26 @@
     <script>
       let clicker = document.getElementById("clicker")
       let clickerCountElement = document.getElementById("clicker-count")
-      let clickerCount = 0
+      let gameState = {
+      	clickerCount: 0
+      }
+      if (localStorage.getItem("gameState-v1")) {
+        try {
+      	  gameState = JSON.parse(localStorage.getItem("gameState-v1"))
+        } catch (e) {
+          alert("Error in save state parsing")
+        }
+      }
       clicker.addEventListener("click", (e) => {
-        ++clickerCount
+        ++gameState.clickerCount
         clickerCountElement.innerText = `${clickerCount}x Saharsh`
       })
       addEventListener("mousemove", (e) => {
-        customCursor.style = `position: absolute;top: ${e.clientY-25}px;left: ${e.clientX-25}px`
+        customCursor.style.transform = `translate(${e.clientX-25}px, ${e.clientY-25}px)`
       }, {passive: true})
+      setInterval(() => {
+        localStorage.setItem("gameState-v1", JSON.stringify(gameState))
+      },1000)
     </script>
   </body>
 </html>
