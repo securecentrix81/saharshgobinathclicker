@@ -3,7 +3,7 @@
   <head>
     <title>Saharsh Gobinath Clicker</title>
     <style>
-      .clicker-container {
+      .clicker-image-container {
         width: 300px;
         height: 300px;
         border-radius: 50%;
@@ -14,17 +14,17 @@
         overflow: hidden;
         transition: 0.1s;
       }
-      .clicker {
+      .clicker-image {
         width: 300px;
         position: relative;
         top: 50%;
         transform: translateY(-50%);
       }
-      .clicker-container:hover {
+      .clicker-image-container:hover {
         transform: translate(-50%, -50%) scale(1.1);
         transition: 0.3s;
       }
-      .clicker-container:active {
+      .clicker-image-container:active {
         transform: translate(-50%, -50%) scale(1.5);
         transition: 0s;
       }
@@ -58,13 +58,14 @@
     <div class="game-container">
       <h1>Saharsh Clicker</h1>
       <pre id="clicker-count">0x Saharsh</pre>
-      <div class="clicker-container" id="clicker">
-        <img class="clicker" src="https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg">
+      <div class="clicker-container">
+        <div class="clicker-image-container" id="clicker"><img class="clicker-image" src="https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg"></div>
       </div>
     </div>
     <img id="customCursor" src="https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg">
     <script>let ALERTED182735123048123423481 = false;addEventListener("error",(e)=>{if(ALERTED182735123048123423481)return;ALERTED182735123048123423481=true;alert(e.message)})</script>
     <script>
+      localStorage.clear() // FOR DEBUGGING
       let clicker = document.getElementById("clicker")
       let clickerCountElement = document.getElementById("clicker-count")
       let gameState = {
@@ -77,6 +78,7 @@
           alert("Error in save state parsing")
         }
       }
+      clickerCountElement.innerText = `${gameState.clickerCount}x Saharsh`
       clicker.addEventListener("click", (e) => {
         ++gameState.clickerCount
         clickerCountElement.innerText = `${gameState.clickerCount}x Saharsh`
