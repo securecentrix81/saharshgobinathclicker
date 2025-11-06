@@ -32,7 +32,7 @@
         font-size: 30px;
         text-align: center;
       }
-      .game-container {
+      .clicker-section {
         position: fixed;
         top: 5%;
         left: 5%;
@@ -48,32 +48,135 @@
       }
       #customCursor {
       	object-fit: cover;
-        width: 50px;
-        height: 50px;
+        width: 20px;
+        height: 20px;
         pointer-events: none;
+      }
+      .upgrade-svg {
+         width: 50px;
+         height: 50px;
+         background-color: #cccccc;
+         border-radius: 50%;
+         position: fixed;
+         top: calc(5% + 10px);
+         left: calc(5% + 10px);
+      }
+      .upgrade-svg:hover {
+         background-color: #bbbbbb;
+      }
+      .upgrade-item {
+        width: 100%;
+        margin: 10px 0 10px 0;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 3em;
+        background-color: #eee;
+      }
+      .upgrade-item:hover {
+        background-color: #ccc;
+      }
+      #upgrade-section {
+        width: 100%;
+        height: 100%;
+        overflow: scroll;
+      }
+      .small {
+        font-size: 0.7em;
       }
     </style>
   </head>
   <body>
-    <div class="game-container">
+    <div class="clicker-section" id="clicker-game-section">
+      <div id="upgrade-svg" class="upgrade-svg">
+        <svg width="50px" height="50px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+        </svg>
+      </div>
       <h1>Saharsh Clicker</h1>
       <pre id="clicker-count">0x Saharsh</pre>
       <div class="clicker-container">
         <div class="clicker-image-container" id="clicker"><img class="clicker-image" src="https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg"></div>
       </div>
     </div>
+    
+    
+    <div class="clicker-section" style="display:none" id="clicker-upgrade-section">
+      <div id="exit-upgrade-svg" class="upgrade-svg">
+        <svg width="50px" height="50px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+        </svg>
+      </div>
+      <h1>Saharsh Clicker</h1>
+      <h1>Upgrades</h1>
+      <div id="upgrade-section"></div>
+    </div>
     <img id="customCursor" src="https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-c0b09cdead19788fb0f8be0d53b5c572_68c34cd700b90.jpg">
     <script>let ALERTED182735123048123423481 = false;addEventListener("error",(e)=>{if(ALERTED182735123048123423481)return;ALERTED182735123048123423481=true;alert(e.message)})</script>
     <script>
+      const GAMEVERSION = "1.0.0"
       localStorage.clear() // FOR DEBUGGING
       let clicker = document.getElementById("clicker")
       let clickerCountElement = document.getElementById("clicker-count")
+      let upgradeSection = document.getElementById("upgrade-section")
+      class Upgrade {
+        constructor (clicks, autoclicks, title, subtitle, cost="auto") {
+          this.cost = cost==="auto"?clicks*25+autoclicks*30:cost
+          this.title = title
+          this.subtitle = subtitle
+          this.clicks = clicks
+          this.autoclicks = autoclicks
+        }
+      }
+      let avaliableUpgrades = [
+        new Upgrade(1, 0, "Centrix81 Addiction", "+1 Saharsh Power"),
+        new Upgrade(0, 1, "Person of the day", "+1 SPS(Saharsh Per Second)"),
+        new Upgrade(0, 5, "SPED class", "+5 SPS(Saharsh Per Second)"),
+        new Upgrade(0, 10, "Leaked yearbook photo", "+10 SPS(Saharsh Per Second)"),
+        new Upgrade(50, 0, "2.5 GPA", "+50 Saharsh Power"),
+        new Upgrade(0, 50, "Gets hacked", "+50 SPS"),
+        new Upgrade(100, 0, "70 IQ", "+100 Saharsh Power"),
+        new Upgrade(190, 190,  "\"Below Average\" on CAST test", "+190 Saharsh Power\n+190 SPS"),
+        new Upgrade(200, 200, "2.0 GPA", "+200 Saharsh Power\n+200 SPS"),
+        new Upgrade(0, 674, "Leaked IP Address(205.173.47.249)", "+205 SPS\n+173 SPS\n+47 SPS\n+249 SPS"),
+        new Upgrade(706, 0, "Leaked Bio ID", "+K706 SPS where K is 1 and K706 is Saharsh's Bio ID"),
+        new Upgrade(0, 1000, "Forgot discord account password", "+1000 SPS"),
+        new Upgrade(0, 1973, "Owner of 1973 Member Group Chat", "at Oct 31, 7:19 PM\n+1973 SPS"),
+        new Upgrade(1500, 0, "60 IQ", "+1500 Saharsh Power"),
+        new Upgrade(3000, 0, "1.5 GPA", "+3000 Saharsh Power"),
+        new Upgrade(0, 3000, "50 IQ", "+3000 SPS"),
+        new Upgrade(7463, 0, "Owner of 7463 Member Group Chat", "at Nov 4, 7:48 AM\n+7463 Saharsh Power"),
+        new Upgrade(10000, 10000, "Saharsh in 7th grade", "+10000 Saharsh Power\n+10000 SPS"),
+        new Upgrade(20000, 20000, "1.0 GPA", "+20000 Saharsh Power\n+20000 SPS"),
+        new Upgrade(0, 49603, "Leaked Food Service Account Number", "+49603 SPS"),
+        new Upgrade(51486, 0, "Leaked Insurance Plan ID: W0051486", "+51486 Saharsh Power"),
+        new Upgrade(100000, 0, "0.5 GPA", "+100000 Saharsh Power"),
+        new Upgrade(0, 100000, "40 IQ", "+100000 SPS"),
+        new Upgrade(300000, 0, "30 IQ", "+300000 Saharsh Power"),
+        new Upgrade(0, 300000, "0.0 GPA", "+300000 SPS"),
+        new Upgrade(500000, 500000, "Leaked Social Security Number", "+500000 Saharsh Power\n+500000 SPS"),
+        new Upgrade(1000000, 0, "20 IQ", "+1000000 Saharsh Power"),
+        new Upgrade(1000000, 1000000, "10 IQ", "+1000000 Saharsh Power\n+1000000 SPS"),
+        new Upgrade(5250578, 0, "Leaked ID Number", "+5250578 Saharsh Power"),
+        new Upgrade(10000000, 10000000, "Skipped Tetanus, Diphtheria and Acellular Pertussis (Tdap) vaccine", "+10000000 Saharsh Power\n+10000000 SPS"),
+        new Upgrade(50000000, 50000000, "0 IQ", "+50000000 Saharsh Power\n+50000000 SPS"),
+        new Upgrade(909343909, 909343909, "Leaked Insurance Member ID:", "TGX909343909\n+909343909 Saharsh Power\n+909343909 SPS"),
+      ]
+      function updateUpgradeSection () {
+        for (let i = 0; i < avaliableUpgrades.length; ++i) {
+          let upgrade = avaliableUpgrades[i]
+          let element = document.createElement("div")
+          element.innerHTML = `<pre style="white-space:pre-wrap"><strong>${upgrade.title}</strong> <i class="small">(${upgrade.cost} Saharsh)</i>${upgrade.subtitle?("<p class=\"small\">"+upgrade.subtitle+"</p>"):""}</pre>`
+          element.classList.add("upgrade-item")
+          element.setAttribute("data-index", i)
+          upgradeSection.appendChild(element)
+        }
+      }
       let gameState = {
       	clickerCount: 0
       }
-      if (localStorage.getItem("gameState-v1")) {
+      if (localStorage.getItem("gameState-v"+GAMEVERSION)) {
         try {
-      	  gameState = JSON.parse(localStorage.getItem("gameState-v1"))
+      	  gameState = JSON.parse(localStorage.getItem("gameState-v"+GAMEVERSION))
         } catch (e) {
           alert("Error in save state parsing")
         }
@@ -84,11 +187,26 @@
         clickerCountElement.innerText = `${gameState.clickerCount}x Saharsh`
       })
       addEventListener("mousemove", (e) => {
-        customCursor.style.transform = `translate(${e.clientX-25}px, ${e.clientY-25}px)`
+        customCursor.style.transform = `translate(${e.clientX-20}px, ${e.clientY-20}px)`
       }, {passive: true})
       setInterval(() => {
         localStorage.setItem("gameState-v1", JSON.stringify(gameState))
       },1000)
+      document.getElementById("upgrade-svg").addEventListener("click", (e) => {
+         document.getElementById("clicker-game-section").style.display = "none"
+         document.getElementById("clicker-upgrade-section").style.display = "block"
+      })
+      document.getElementById("exit-upgrade-svg").addEventListener("click", (e) => {
+         document.getElementById("clicker-game-section").style.display = "block"
+         document.getElementById("clicker-upgrade-section").style.display = "none"
+      })
+      upgradeSection.addEventListener("click", (e) => {
+        let index = e.target.getAttribute("data-index")
+        if (index) {
+          // buy upgrade
+        }
+      })
+      updateUpgradeSection()
     </script>
   </body>
 </html>
