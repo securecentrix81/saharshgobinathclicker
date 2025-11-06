@@ -138,10 +138,10 @@
       let clickerCountElement = document.getElementById("clicker-count")
       let upgradeSection = document.getElementById("upgrade-section")
       class Upgrade {
-        constructor (clicks, autoclicks, title, subtitle, cost="auto") {
+        constructor (clicks, autoclicks, title, subtitle="auto", cost="auto") {
           this.cost = cost==="auto"?clicks*100+autoclicks*60:cost
           this.title = title
-          this.subtitle = subtitle
+          this.subtitle = subtitle==="auto"?((clicks===0?"":clicks+" Saharsh Power\n")+(autoclicks===0?"":autoclicks+" SPS")):subtitle
           this.clicks = clicks
           this.autoclicks = autoclicks
         }
