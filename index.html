@@ -1,17 +1,3 @@
-<!-- start of "normal person" blocker -->
-<div id="d0082e1c-16cc-4a7e-b920-d2b5bf8c3ce1" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;background-color:#ffffff;z-index:2147483649;">Validating authentication state. Login at the <a href="/">home page</a></div>
-<script>
-  try {
-    if (!localStorage.getItem("userIsValidated")) {
-      window.location.replace("/")
-    } else {
-      document.getElementById("d0082e1c-16cc-4a7e-b920-d2b5bf8c3ce1").remove()
-    }
-  } catch (e) {
-    window.location.replace("/")
-  }
-</script>
-<!-- end of "normal person" blocker -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -85,9 +71,6 @@
         padding-bottom: 10px;
         font-size: 3em;
         background-color: #eee;
-      }
-      .upgrade-item:hover {
-        background-color: #ccc;
       }
       .upgrade-item.locked {
         opacity: 0.5;
@@ -262,17 +245,27 @@
         customCursor.style.transform = `translate(${e.clientX-20}px, ${e.clientY-20}px)`;
       }, {passive: true});
 
+      // Game loop for auto-clicks - runs smoothly at ~15 FPS
       setInterval(() => {
         gameState.clickerCount += autoPerSec/15;
         updateCountDisplay();
-        updateUpgradeSection()
       }, 1000/15);
+      
+      // Upgrade menu refresh - only when visible, at 2 FPS
+      setInterval(() => {
+        if (document.getElementById("clicker-upgrade-section").style.display !== "none") {
+          updateUpgradeSection();
+        }
+      }, 500);
 
       setInterval(() => {
         localStorage.setItem("gameState-v" + GAMEVERSION, JSON.stringify(gameState));
       }, 1000);
 
       function updateUpgradeSection() {
+        // Skip update if upgrade menu is not visible
+        if (document.getElementById("clicker-upgrade-section").style.display === "none") return;
+        
         upgradeSection.innerHTML = "";
         
         for (let i = 0; i < avaliableUpgrades.length; ++i) {
